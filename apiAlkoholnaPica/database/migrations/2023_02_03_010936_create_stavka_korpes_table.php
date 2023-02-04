@@ -14,7 +14,10 @@ return new class extends Migration
     public function up()
     {
         Schema::create('stavka_korpes', function (Blueprint $table) {
-            $table->id();
+            $table->id(); 
+            $table->foreignId('korpa_id');
+            $table->foreignId('pice_id');
+            $table->integer('kolicina'); 
             $table->timestamps();
         });
     }
