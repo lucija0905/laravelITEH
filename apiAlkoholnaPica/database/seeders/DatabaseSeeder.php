@@ -1,9 +1,14 @@
 <?php
 
 namespace Database\Seeders;
+use App\Models\Korpa;
+use App\Models\Pice;
+use App\Models\User;
+use App\Models\Vrsta;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -14,11 +19,24 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+        User::truncate();
+        Vrsta::truncate();
+        Korpa::truncate();
+        Pice::truncate();
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+
+        $admin = new User();
+        $admin->name="Admin";
+        $admin->email="admin@gmail.com";
+        $admin->password= Hash::make("admin");
+        $admin->admin = 1;
+        $admin->save();
+        User::factory(10)->create();
+
+        $vs = new VrstaSeeder(); 
+        $vs->run();
+
+        $ps = new PiceSeeder();
+        $ps->run();
     }
 }
