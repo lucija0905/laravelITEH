@@ -21,10 +21,6 @@ class AuthController extends Controller
                 'email' => 'required|string|max:100|email',
                 'phone' => 'string',  
                 'birthdate' => 'string' ,
-                
-
-            
-
             ]
         );
         if ($validator->fails()) 
