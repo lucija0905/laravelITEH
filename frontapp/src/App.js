@@ -10,6 +10,8 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Pica from './Komponente/Pica';
 import Korpa from './Komponente/Korpa';
+import Kontakt from './Komponente/Kontaks';
+import Inbox from './Komponente/Inbox';
 const axiosInstance = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
 });
@@ -19,6 +21,7 @@ function App() {
   const [cartProducts, setCartProducts] = useState([]);
   const [sum, setSumPrice] = useState(0); 
   const [pica,setPica] = useState([ ]);
+  const [poruke,setPoruke] = useState([]);
   useEffect(() => {
     const getRandomLists = async () => {
       try {
@@ -40,9 +43,40 @@ function App() {
     getRandomLists();
   }, [ axiosInstance]);
  
+  useEffect(() => {
+    const getRandomLists2 = async () => {
+      try {
+        const res = await axiosInstance.get( "http://127.0.0.1:8000/api/poruke",
+          {
+            headers: {
+              token:
+                "Bearer " +
+                ( window.sessionStorage.getItem("auth_token")),
+            },
+          }
+        );
+        setPoruke(res.data);
+        console.log(res.data)
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getRandomLists2();
+  }, [ axiosInstance]);
   function addToken(auth_token){
     setToken(auth_token);
   }
+ 
+  function handleLogout(){ 
+    console.log("USAO")
+    window.sessionStorage.setItem('auth_token',null); 
+    window.sessionStorage.setItem('auth_name',null); 
+ 
+    console.log(window.sessionStorage.getItem("auth_token")) 
+  }
+
+     
+  
  
   function refreshCart() {
     let u_korpi = pica.filter((p) => p.kolicina > 0);
@@ -100,14 +134,15 @@ function App() {
   return (
     <div  >
       <BrowserRouter className="App">
-        <NavBar token={token}></NavBar>
+        <NavBar token={token} odjava={handleLogout}></NavBar>
         <Routes>
             <Route path="/" element={ <Pocetna></Pocetna>}></Route>
             <Route path="/login" element={ <Login  addToken={addToken} ></Login>}></Route>
             <Route path="/register" element={ <Register ></Register>}></Route>
             <Route path="/pica" element={ <Pica pica={pica} onAdd={addProduct} onRemove={removeProduct} ></Pica>}></Route>
             <Route path="/korpa" element={ <Korpa pica={cartProducts} onAdd={addProduct} onRemove={removeProduct} sum={sum} ></Korpa>}></Route>
-
+            <Route path="/kontakt" element={ <Kontakt></Kontakt>}></Route>
+            <Route path="/inbox" element={ <Inbox poruke={poruke} ></Inbox>}></Route>
 
         </Routes>
         <Footer></Footer>
