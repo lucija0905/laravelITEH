@@ -10,10 +10,11 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Pica from './Komponente/Pica';
 import Korpa from './Komponente/Korpa';
-import Kontakt from './Komponente/Kontakt';
+import Kontakt from './Komponente/Kontaks';
 import Inbox from './Komponente/Inbox';
 import AdminPage from './Komponente/AdminPage';
 import Izmeni from './Komponente/Izmeni';
+import Analiza from './Komponente/Analiza';
 const axiosInstance = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
 });
@@ -182,7 +183,8 @@ function postaviIDZaIzmenu(id){
             <Route path="/admin/inbox" element={ <Inbox poruke={poruke} ></Inbox>}></Route>
             <Route path="/admin" element={ <AdminPage pica={pica} deletePice={deletePice} setIzmeniID={postaviIDZaIzmenu} ></AdminPage>}></Route>
             <Route path="/admin/izmeni" element={ <Izmeni id={izmenaID} ></Izmeni>}></Route>
-
+            <Route path="/admin/analiza" element={ <Analiza pica={pica} ></Analiza>}></Route>
+          
 
         </Routes>
         <Footer></Footer>
